@@ -7,14 +7,14 @@ from torch import Tensor
 
 
 # 将输入的词汇表索引转换为指定维度的Embedding
-class TokenEmbedding(nn.Module):
-    def __init__(self, vocab_size, embed_size):
-        super(TokenEmbedding).__init__(vocab_size, embed_size, padding_idx=1)
+class TokenEmbedding(nn.Embedding):
+    def __init__(self, vocab_size, embed_size, padding_idx=1):
+        super().__init__(vocab_size, embed_size, padding_idx=padding_idx)
 
 
 class PositionEmbedding(nn.Module):
     def __init__(self, embed_size, max_length, device):
-        super(PositionEmbedding, self).__init__()
+        super().__init__()
         self.encoding = torch.zeros(max_length, embed_size, device=device)
         self.encoding.requires_grad = False
         pos = torch.arange(0, max_length, device=device)
@@ -30,7 +30,7 @@ class PositionEmbedding(nn.Module):
 
 class TransformerEmbedding(nn.Module):
     def __init__(self, vocab_size, embed_size, max_length, dropout, device):
-        super(TransformerEmbedding, self).__init__()
+        super().__init__()
         self.token_embeddings = TokenEmbedding(vocab_size, embed_size)
         self.position_embeddings = PositionEmbedding(embed_size, max_length, device)
         self.dropout = nn.Dropout(dropout)
